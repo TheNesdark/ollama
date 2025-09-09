@@ -2,8 +2,13 @@ FROM ollama/ollama:latest
 
 EXPOSE 11434
 
-# Carpeta de modelos
+ENV MODEL_NAME=mistral
+
+# Carpeta para modelos
 RUN mkdir -p /root/.ollama/models
 
-# Inicia el servidor de Ollama
-CMD ["ollama", "serve"]
+# Al arrancar: iniciar Ollama, esperar y descargar modelo
+CMD ollama serve & \
+    sleep 5 && \
+    ollama pull ${MODEL_NAME} && \
+    wait
